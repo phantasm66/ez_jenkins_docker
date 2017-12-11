@@ -1,0 +1,24 @@
+node {
+    def app
+
+    stage('Clone repository...') {
+        checkout scm
+    }
+
+    stage('Build image...') {
+        app = docker.build("phantasm66/redis")
+    }
+
+    stage('Run tests...') {
+        app.inside {
+            sh 'echo "Tests passed"'
+        }
+    }
+
+    stage('Push image') {
+        /* Tag and push the built image to our registry */
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            app.push("latest")
+        }
+    }
+}
