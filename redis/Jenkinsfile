@@ -8,7 +8,7 @@ node {
     }
 
     stage('Start docker daemon in our build container...') {
-        sh '/usr/bin/dockerd-default'
+        sh '/usr/bin/dockerd'
     }
 
     /* Enter our ez_jenkins_docker project sub-directory */
