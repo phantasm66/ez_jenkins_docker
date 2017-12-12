@@ -19,7 +19,7 @@ node {
         /* NOTE: tests on the built app are done in a downstream jenkins job */
 
         stage('Push image to our docker registry...') {
-            sh '/usr/bin/docker login -u EZ_DOCKER_HUB_REGISTRY_USR -p EZ_DOCKER_HUB_REGISTRY_PSW'
+            sh '/usr/bin/docker login -u $EZ_DOCKER_HUB_REGISTRY_USR -p $EZ_DOCKER_HUB_REGISTRY_PSW'
             sh '/usr/bin/docker push phantasm66/ez_redis'
         }
 
