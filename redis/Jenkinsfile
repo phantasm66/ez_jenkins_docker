@@ -7,6 +7,10 @@ node {
         checkout scm
     }
 
+    stage('Start docker daemon in our build container...') {
+        sh '/usr/bin/dockerd-default'
+    }
+
     /* Enter our ez_jenkins_docker project sub-directory */
     dir ('redis') {
 
