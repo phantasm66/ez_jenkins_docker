@@ -9,10 +9,11 @@ node {
 
     stage('Start docker daemon in our build container...') {
         /*
-           We do this instead of calling 'docker build', etc..
-           because the defined 'app' object holds info needed
-           for launching and running tests inside a container
-           launched from the newly built image
+           We do this instead of calling 'docker build', etc.. because
+           the defined 'app' object holds info needed for launching and
+           running tests inside a container launched from the new image
+
+           It also abstracts away a lot of procedural docker commands...
         */
         sh '/usr/bin/docker -d'
     }
@@ -27,10 +28,9 @@ node {
         stage('Run tests...') {
             app.inside {
                 /*
-                   You could also call a more comprehensive script
-                   to run your tests that was added to our slave
-                   docker image builder image during it's original
-                   docker build
+                   You could also call a more comprehensive script to
+                   run your tests that was added to our slave docker
+                   image builder image during it's original docker build
                 */
                 sh 'echo "Tests passed"'
             }
