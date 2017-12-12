@@ -11,7 +11,7 @@ node {
     dir ('redis') {
 
         stage('Build docker image...') {
-            app = docker.build('ezredis', '--file Dockerfile .')
+            app = docker.build('phantasm66/ezredis', '--file Dockerfile .')
         }
 
         /* NOTE: tests are done in a downstream job during dev container launch */
