@@ -6,7 +6,7 @@ node {
     }
 
     stage('Build image...') {
-        app = docker.build("phantasm66/redis")
+        app = docker.build('ezredis', '--file Dockerfile .')
     }
 
     stage('Run tests...') {
