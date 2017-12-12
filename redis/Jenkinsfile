@@ -8,6 +8,7 @@ node {
     }
 
     stage('Build image...') {
+        sh 'cd redis'
         app = docker.build('ezredis', '--file Dockerfile .')
     }
 
