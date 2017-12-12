@@ -1,9 +1,7 @@
 node {
-    label 'docker_build'
+    def app
 
-    environment {
-        EZ_DOCKER_HUB_REGISTRY = credentials('docker-hub-credentials')
-    }
+    label 'docker_build'
 
     stage('Clone repository...') {
         checkout scm
@@ -12,15 +10,16 @@ node {
     /* Enter our ez_jenkins_docker project sub-directory */
     dir ('redis') {
 
-        stage('Build & tag image...') {
-            sh '/usr/bin/docker build -t phantasm66/ez_redis .'
+        stage('Build docker image...') {
+            app = docker.build('phantasm66/ezredis', '--file Dockerfile .')
         }
 
-        /* NOTE: tests on the built app are done in a downstream jenkins job */
+        /* NOTE: tests are done in a downstream job during dev container launch */
 
-        stage('Push image to our docker registry...') {
-            sh '/usr/bin/docker login -u EZ_DOCKER_HUB_REGISTRY_USR -p EZ_DOCKER_HUB_REGISTRY_PSW'
-            sh '/usr/bin/docker push phantasm66/ez_redis'
+        stage('Tag & push image to our docker registry...') {
+            docker.withRegistry('https://registry-1.docker.io/v2', 'docker-hub-credentials') {
+                app.push("latest")
+            }
         }
 
     }
