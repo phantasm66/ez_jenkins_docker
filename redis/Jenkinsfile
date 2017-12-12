@@ -8,7 +8,13 @@ node {
     }
 
     stage('Start docker daemon in our build container...') {
-        sh '/usr/bin/dockerd'
+        /*
+           We do this instead of calling 'docker build', etc..
+           because the defined 'app' object holds info needed
+           for launching and running tests inside a container
+           launched from the newly built image
+        */
+        sh '/usr/bin/docker -d'
     }
 
     /* Enter our ez_jenkins_docker project sub-directory */
@@ -20,6 +26,12 @@ node {
 
         stage('Run tests...') {
             app.inside {
+                /*
+                   You could also call a more comprehensive script
+                   to run your tests that was added to our slave
+                   docker image builder image during it's original
+                   docker build
+                */
                 sh 'echo "Tests passed"'
             }
         }
