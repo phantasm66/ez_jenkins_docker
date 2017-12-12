@@ -7,17 +7,6 @@ node {
         checkout scm
     }
 
-    stage('Start docker daemon in our build container...') {
-        /*
-           We do this instead of calling 'docker build', etc.. because
-           the defined 'app' object holds info needed for launching and
-           running tests inside a container launched from the new image
-
-           It also abstracts away a lot of procedural docker commands...
-        */
-        sh '/usr/bin/docker -d'
-    }
-
     /* Enter our ez_jenkins_docker project sub-directory */
     dir ('redis') {
 
