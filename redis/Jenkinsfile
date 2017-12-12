@@ -14,16 +14,7 @@ node {
             app = docker.build('ezredis', '--file Dockerfile .')
         }
 
-        stage('Run tests...') {
-            app.inside {
-                /*
-                   You could also call a more comprehensive script to
-                   run your tests that was added to our slave docker
-                   image builder image during it's original docker build
-                */
-                sh 'echo "Tests passed"'
-            }
-        }
+        /* NOTE: tests on the built app are done in a downstream jenkins job */
 
         stage('Push image') {
             /* Tag and push the built image to our registry */
