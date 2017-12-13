@@ -1,25 +1,27 @@
-node {
-    label 'docker_build'
+node('build-pod') {
+    container('jnlp-docker') {
 
-    stage('Clone the ez_jenkins_docker repo to our build slave workspace...') {
-        checkout scm
-    }
-
-    dir ('redis') {
-
-        /* FYI: we are now in the ez_jenkins_docker repos 'redis' project directory */
-
-        stage('Build and tag our projects base docker image...') {
-            sh '/usr/bin/docker build -t phantasm66/ez_redis .'
+        stage('Clone the ez_jenkins_docker repo to our build slave workspace...') {
+            checkout scm
         }
+    
+        dir ('redis') {
+    
+            /* FYI: we are now in the ez_jenkins_docker repos 'redis' project directory */
 
-        /* NOTE: tests are performed on an app container instantiated from this image in a downstream jenkins job */
+            stage('Build and tag our projects base docker image...') {
+                sh '/usr/bin/docker build -t phantasm66/ez_redis .'
+            }
 
-        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-            stage('Push our final image to our docker registry...') {
-                sh '/usr/bin/docker login -u $USERNAME -p $PASSWORD'
-                sh '/usr/bin/docker push phantasm66/ez_redis'
+            /* NOTE: tests are performed on an app container instantiated from this image in a downstream jenkins job */
+
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                stage('Push our final image to our docker registry...') {
+                    sh '/usr/bin/docker login -u $USERNAME -p $PASSWORD'
+                    sh '/usr/bin/docker push phantasm66/ez_redis'
+                }
             }
         }
+
     }
 }
