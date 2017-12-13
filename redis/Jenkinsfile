@@ -1,6 +1,6 @@
 node('build-pod') {
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-        container('jnlp') {
+        container('docker-builder') {
 
             stage('Clone the ez_jenkins_docker repo to our build slave workspace...') {
                 checkout scm
